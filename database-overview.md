@@ -181,3 +181,56 @@ MongoDB là CSDL đa năng được dùng theo nhiều cách khác nhau, có th�
 
 - [The Top 4 Reasons Why You Should Use MongoDB](https://www.mongodb.com/developer/products/mongodb/top-4-reasons-to-use-mongodb)
 - [Why Use MongoDB and When to Use It?](https://www.mongodb.com/why-use-mongodb)
+
+# MongoDB cơ bản
+
+## MongoDB là gì
+
+- Một hệ quản trị cơ sở dữ liệu NoSQL
+- Ra đời 2007, được dùng rộng rãi trên toàn thế giới, có thể coi là một trong những CSDL NoSQL được dùng nhiều nhất hiện nay
+- Thay vì lưu trong từng hàng hay cột như SQL, MongoDB dùng document theo dạng BJSON. Ứng dụng có thể lấy data ra theo dạng JSON
+
+```json
+{
+  "_id": 1,
+  "name": {
+    "first": "Ada",
+    "last": "Lovelace"
+  },
+  "title": "The First Programmer",
+  "interests": ["mathematics", "programming"]
+}
+```
+
+- Tính linh hoạt cao, cho phép lưu nhiều loại cấu trúc dữ liệu
+- Khả năng scale dễ dàng
+
+## Cài đặt MongoDB
+
+- Tải về máy và cài trên local
+- **Dùng Cloud**: Mongo Atlas
+
+Khi đang học thì nên dùng Mongo Atlas cho tiện, để khi cần support thì mọi người chỉ cần gửi code, mọi người có thể truy cập vào db của bạn mà không cần tải db bạn về.
+
+## Kết nối MongoDB
+
+- Dùng Mongo Compass
+- Dùng MongoSH (terminal)
+- Dùng mongo driver (SDK tích hợp vào code)
+- Dùng Extension MongoDB cho VS Code
+
+## Một số thuật ngữ trong MongoDB
+
+Mình sẽ lấy Mongo Atlas làm ví dụ
+
+- Cấp độ cao nhất là Organization
+- 1 Organization có thể có nhiều projects
+- 1 project có thể có nhiều clusters
+- 1 cluster có thể có nhiều databases
+- Trong mỗi database chúng ta lại có các collections
+- Mỗi collection lại có nhiều documents
+
+Cluster có thể hiểu như là một server vps, dùng để cài đặt mongodb. Từ đó chúng ta có thể tạo thêm nhiều database trên cái server đó
+
+Collection tương đương với bảng bên SQL
+Document tương đương hàng bên SQL
