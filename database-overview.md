@@ -230,7 +230,7 @@ Mình sẽ lấy Mongo Atlas làm ví dụ
 - Trong mỗi database chúng ta lại có các collections
 - Mỗi collection lại có nhiều documents
 
-Cluster có thể hiểu như là một server vps, dùng để cài đặt mongodb. Từ đó chúng ta có thể tạo thêm nhiều database trên cái server đó
+Cluster có thể hiểu như là một máy chủ VPS, dùng để cài đặt MongoDB. Từ đó chúng ta có thể tạo thêm nhiều database trên máy chủ đó
 
 Collection tương đương với bảng bên SQL
 Document tương đương hàng bên SQL
