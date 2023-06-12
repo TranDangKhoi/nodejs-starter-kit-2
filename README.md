@@ -82,7 +82,7 @@ Tiếp theo copy và paste cấu hình dưới đây vào file tsconfig.json c�
   "ts-node": {
     "require": ["tsconfig-paths/register"]
   },
-  "files": ["src/type.d.ts"], // Các file dùng để defined global type cho dự án
+  "files": ["src/types.d.ts"], // Các file dùng để defined global type cho dự án
   "include": ["src/**/*"] // Đường dẫn include cho các file cần build
 }
 ```
