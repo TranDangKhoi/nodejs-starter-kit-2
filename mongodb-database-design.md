@@ -163,3 +163,17 @@ Log Message:
     "host": ObjectID("AAAB")
 }
 ```
+
+- Quy tắc 5: Với MongoDB, cách bạn mô hình hóa dữ liệu phụ thuộc vào cách bạn sử dụng dữ liệu. Bạn muốn cấu trúc dữ liệu của bạn phù hợp với cách mà ứng dụng của bạn query và update nó.
+
+### Recap
+
+1 - 1: Ưu tiên cặp key-value trong document
+
+1 - ít: Ưu tiên nhúng
+
+1 - nhiều: Ưu tiên tham chiếu
+
+1 - rất nhiều: Ưu tiên tham chiếu
+
+Nhiều - Nhiều: Ưu tiên tham chiếu
