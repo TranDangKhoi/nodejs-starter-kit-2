@@ -100,3 +100,66 @@ Tham chiếu hoạt động tương tự như toán tử JOIN trong một truy v
 
 - Hạn chế:
   - Để truy xuất được hết data, chúng ta cần tối thiểu là 2 query hoặc dùng `$lookup`
+
+## Các quy tắc cần nhớ để có thể nhận biết khi nào nên dùng nhúng, khi nào nên dùng tham chiếu
+
+- Quy tắc 1: Ưu tiên nhúng trừ khi chúng ta có một lý do thuyết phục để không làm như vậy
+
+- Quy tắc 2: Khi cần truy cập vào một đối tượng riêng biệt, đây là lúc nên dùng tham chiếu
+
+- Collection Products:
+
+```json
+{
+  "name": "Some random bicycle",
+  "manufacturer": "Acme Corp",
+  "catalog_number": "1234",
+  "parts": ["ObjectID('AAAA')", "ObjectID('BBBB')", "ObjectID('CCCC')"]
+}
+```
+
+- Collection Parts:
+
+```json
+{
+  "_id": "ObjectID('AAAA')",
+  "partno": "123-aff-456",
+  "name": "#4 grommet",
+  "qty": "94",
+  "cost": "0.94",
+  "price": " 3.99"
+}
+// ... Tự tưởng tượng thêm 2 parts ObjectID BBBB và CCCC
+```
+
+- Quy tắc 3: Tránh joins/lookups nếu có thể, nhưng cũng đừng sợ nếu nó giúp chúng ta có một schema tốt hơn
+
+- Quy tắc 4 (đặc biệt chú ý): Array không nên phát triển không giới hạn. Nếu có hơn vài trăm document ở phía "nhiều" thì đừng nhúng chúng; Nếu có hơn vài ngàn document ở phía "nhiều" thì đừng sử dụng array ObjectID tham chiếu. Mảng với số lượng lớn item là lý do không nên dùng nhúng.
+
+#### Giải thích lí do
+
+Điều gì sẽ xảy ra nếu chúng ta có một schema mà có khả năng có đến hàng triệu, hàng tỷ các document phụ thuộc. À mà ngoài đời liệu có trường hợp nào có đến hàng triệu, hàng tỉ document phụ thuộc không? Câu trả lời là có, và nó rất thực tế.
+
+Hãy cùng tưởng tượng chúng ta tạo một ứng dụng ghi log server. Mỗi máy chủ có thể lưu trữ hàng tỉ message log. Nếu dùng array trong MongoDB, cho dù các bạn đã dùng array chứa các Object ID thì cũng có khả năng các bạn chạm đến giới hạn là 16 MB cho document. Vậy nên chúng ta cần suy nghĩ lại cách thiết kế làm sao cho khi database phình to ra thì vẫn không bị giới hạn.
+
+Bây giờ, thay vì tập trung mối quan hệ giữa host và log message, chúng ta hãy nhìn ngược lại, mỗi log message sẽ lưu trữ một host mà nó thuộc về. Bằng cách này thì chúng ta sẽ không sợ bị giới hạn bởi 16 MB nữa.
+
+Hosts:
+
+```json
+{
+    "_id": ObjectID("AAAB"),
+    "name": "goofy.example.com",
+    "ipaddr": "127.66.66.66"
+}
+```
+
+Log Message:
+
+```json
+{
+    "time": ISODate("2014-03-28T09:42:41.382Z"),
+    "message": "cpu is on fire!",
+    "host": ObjectID("AAAB")
+}
+```
