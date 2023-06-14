@@ -60,10 +60,43 @@ Bây giờ chúng ta cùng xem lại ví dụ trên như thế nào khi thiết 
 }
 ```
 
-Như các bạn thấy, tất cả nằm trong cùng một collection luôn, không lòng vòng
+Như các bạn thấy, tất cả nằm trong cùng một collection luôn, không lòng vòng. Nhưng mọi thứ không đơn giản tới vậy, đọc tiếp nhóe
 
 ## Nhúng và Tham chiếu
 
 Khi thiết kế schema cho MongoDB, chúng ta sẽ đứng ở giữa 2 lựa chọn là **Embedding** hay **Referencing**, hay còn gọi là **nhúng** và **tham chiếu**.
 
 Nhúng có nghĩa là đưa hết data vào trong một document, còn tham chiếu là lưu trữ data trong một document thuộc collection riêng biệt và tham chiếu đến nó thông qua việc sử dụng khóa ngoại và toán tử **$lookup** (tương tự JOIN trong SQL).
+
+### Nhúng (nên ưu tiên khí có thể dùng)
+
+Chính là cách làm giống như ví dụ trên, nhúng tất cả data vào trong một document
+
+- Ưu điểm:
+
+  - Bạn có thể truy xuất tất cả thông tin liên quan trong một query
+  - Tránh việc join hoặc lookup trong ứng dụng
+  - Update các thông tin liên quan trong một query duy nhất
+
+- Hạn chế:
+
+  - Khi document lớn lên sẽ gây gánh nặng cho những trường không liên quan. Bạn có thể tăng hiệu suất truy vấn bằng cách hạn chế kích thước của các document mà bạn gửi qua cho mỗi truy vấn.
+
+  - Giới hạn cho document là 16 MB trong MongoDB. Nếu bạn nhúng quá nhiều dữ liệu bên trong một document duy nhất, bạn có thể đụng phải giới hạn này.
+
+### Tham chiếu
+
+Tham chiếu hoạt động tương tự như toán tử JOIN trong một truy vấn SQL. Nó cho phép chúng ta chia dữ liệu để tạo ra các truy vấn hiệu quả và có thể mở rộng hơn, nhưng vẫn duy trì mối quan hệ giữa dữ liệu.
+
+- Ưu điểm:
+
+  - Bằng cách chia dữ liệu, bạn sẽ có các document nhỏ hơn.
+
+  - Ít khả năng đạt giới hạn 16-MB cho mỗi document.
+
+  - Những dữ liệu không cần thiết sẽ không được đính kèm vào các truy vấn.
+
+  - Giảm lượng trùng lặp dữ liệu. Tuy nhiên, điều quan trọng cần lưu ý là đôi khi chúng ta chấp nhận trùng lặp dữ liệu để đem lại một schema tốt hơn.
+
+- Hạn chế:
+  - Để truy xuất được hết data, chúng ta cần tối thiểu là 2 query hoặc dùng `$lookup`
